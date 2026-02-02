@@ -68,7 +68,30 @@ Agent: "As you can see on line 48..."
 - Tools are simple, focused, and testable
 - Standard tool invocation pattern
 
-### 3. Tour Flow: Overview-First Pattern
+### 3. Rely on Built-in Tools for Code Discovery
+
+**Decision**: Use GitHub Copilot's built-in tools (`read`, `search`, etc.) for code discovery. Only implement custom tools for editor navigation.
+
+**Rationale**:
+- Built-in tools already provide robust code search and reading capabilities
+- No need to duplicate functionality that exists
+- Extension focuses on what only it can do: editor control
+- Simpler implementation and maintenance
+
+**Tool responsibilities**:
+- **Built-in tools** (`read`, `search`): Agent uses these to find and understand code
+- **Custom tools** (`openFile`, `highlightLines`, `navigateToLine`): Agent uses these to show code to the user
+
+**Example workflow**:
+```
+1. User: "How does authentication work?"
+2. Agent uses built-in `search` to find auth-related files
+3. Agent uses built-in `read` to understand the code
+4. Agent plans tour based on search results
+5. Agent invokes custom `openFile` to show user the code
+```
+
+### 4. Tour Flow: Overview-First Pattern
 
 **Decision**: When user asks a question, agent first provides a text overview of what it will show, then starts the tour.
 
@@ -91,7 +114,7 @@ Agent: "Authentication has three main parts:
 [Opens first file]
 ```
 
-### 4. User-Controlled Pacing
+### 5. User-Controlled Pacing
 
 **Decision**: After each tour stop (file opened + explanation given), agent waits for user signal before proceeding.
 
@@ -103,7 +126,7 @@ Agent: "Authentication has three main parts:
 
 **Implementation**: User can type "next", "continue", or any message to proceed. Questions are answered briefly by default, but user can request deeper dives.
 
-### 5. Simplified Question Handling Mid-Tour
+### 6. Simplified Question Handling Mid-Tour
 
 **Decision**: By default, answer user questions briefly and continue the tour. Only create sub-tours if user explicitly requests ("show me that" / "dig deeper into X").
 
