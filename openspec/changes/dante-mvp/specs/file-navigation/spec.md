@@ -1,45 +1,75 @@
 ## ADDED Requirements
 
-### Requirement: Open files at specific locations
-The system SHALL open files in the VS Code editor at specific line numbers and highlight relevant code sections.
+### Requirement: openFile tool implementation
+The VS Code extension SHALL implement an openFile tool that opens files at specified lines when invoked by the agent.
 
 #### Scenario: Open file at line number
-- **WHEN** agent navigates to a tour stop
-- **THEN** system opens the file and positions the cursor at the specified line number
+- **WHEN** agent invokes openFile with path and line number
+- **THEN** extension opens the file and positions cursor at the specified line
 
-#### Scenario: Highlight code range
-- **WHEN** agent references a multi-line code block
-- **THEN** system highlights the entire range of lines being discussed
+#### Scenario: Open file with line range
+- **WHEN** agent invokes openFile with path and line range (start, end)
+- **THEN** extension opens file and highlights the entire range
 
-### Requirement: Control editor viewport
-The system SHALL ensure that highlighted code is visible in the editor viewport.
+#### Scenario: Tool returns success status
+- **WHEN** openFile tool successfully opens a file
+- **THEN** tool returns success response with visible range information
 
-#### Scenario: Scroll to highlighted code
-- **WHEN** system opens a file and highlights lines
-- **THEN** editor automatically scrolls to ensure highlighted lines are centered in the viewport
+### Requirement: highlightLines tool implementation
+The VS Code extension SHALL implement a highlightLines tool that highlights specified line ranges in the currently active file.
 
-#### Scenario: File already open
-- **WHEN** system navigates to a file that is already open in an editor tab
-- **THEN** system reuses the existing tab and updates the selection
+#### Scenario: Highlight range in current file
+- **WHEN** agent invokes highlightLines with line range
+- **THEN** extension highlights the specified lines in the active editor
 
-### Requirement: Handle navigation errors gracefully
-The system SHALL handle cases where files cannot be opened or do not exist.
+#### Scenario: Update existing highlight
+- **WHEN** agent invokes highlightLines while a previous highlight exists
+- **THEN** extension removes previous highlight and applies new one
+
+### Requirement: navigateToLine tool implementation
+The VS Code extension SHALL implement a navigateToLine tool that scrolls to and centers a specific line in the active editor.
+
+#### Scenario: Scroll to specific line
+- **WHEN** agent invokes navigateToLine with line number
+- **THEN** extension scrolls to position that line in the center of the viewport
+
+#### Scenario: Navigate in already-open file
+- **WHEN** agent invokes navigateToLine on an already-visible file
+- **THEN** extension updates viewport without reopening the file
+
+### Requirement: Tool error handling
+All tools SHALL handle error cases gracefully and return informative error responses to the agent.
 
 #### Scenario: File does not exist
-- **WHEN** agent attempts to open a non-existent file
-- **THEN** system notifies the user in chat that the file could not be found
+- **WHEN** agent invokes openFile with non-existent path
+- **THEN** tool returns error response indicating file not found
 
-#### Scenario: File cannot be read
-- **WHEN** agent attempts to open a file without read permissions
-- **THEN** system displays an error message and continues the tour
+#### Scenario: Invalid line number
+- **WHEN** agent invokes tool with line number beyond file length
+- **THEN** tool returns error and opens/navigates to last line instead
 
-### Requirement: Support workspace-relative paths
-The system SHALL resolve file paths relative to the current workspace root.
+#### Scenario: No active editor
+- **WHEN** agent invokes highlightLines or navigateToLine with no active editor
+- **THEN** tool returns error indicating no active editor
 
-#### Scenario: Open file with relative path
-- **WHEN** agent specifies a path like "src/auth/login.ts"
-- **THEN** system resolves it relative to the workspace root and opens the file
+### Requirement: Workspace path resolution
+Tools SHALL resolve file paths relative to the workspace root(s).
 
-#### Scenario: Multi-root workspace
-- **WHEN** user has multiple workspace folders
-- **THEN** system searches across all workspace roots to find the file
+#### Scenario: Relative path resolution
+- **WHEN** agent provides relative path like "src/auth/login.ts"
+- **THEN** extension resolves it relative to workspace root
+
+#### Scenario: Multi-root workspace support
+- **WHEN** workspace has multiple root folders
+- **THEN** extension searches all roots to locate the file
+
+### Requirement: Visual feedback
+The extension SHALL provide visual feedback when tools are invoked.
+
+#### Scenario: Status bar notification
+- **WHEN** tool is invoked successfully
+- **THEN** extension shows brief status bar message confirming action
+
+#### Scenario: Error notification
+- **WHEN** tool invocation fails
+- **THEN** extension shows error message to user

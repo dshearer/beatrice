@@ -21,22 +21,54 @@ This is a greenfield project with no existing codebase. We're building on top of
 
 ## Decisions
 
-### 1. GitHub Copilot Agent as the Core
+### 1. Hybrid Architecture: Custom Agent + VS Code Extension
 
-**Decision**: Build around a custom GitHub Copilot agent rather than a standalone language model integration.
+**Decision**: Build Dante as a custom GitHub Copilot agent (`.agent.md` file) that uses tools provided by a VS Code extension.
+
+**Architecture**:
+- **Custom Agent** (`.github/agents/dante.agent.md`): Defines the agent's behavior, prompts, tour planning logic, and available tools. Runs within GitHub Copilot's infrastructure.
+- **VS Code Extension**: Implements the custom tools that the agent can invoke via standard tool calls.
+- **Custom Tools**: `openFile`, `highlightLines`, `navigateToLine` - declared in agent YAML, implemented by extension.
 
 **Rationale**:
-- Copilot already has deep codebase understanding and context management
-- Agent API provides chat participant integration (@dante in chat)
+- Copilot agents have deep codebase understanding and context management built-in
+- Agent defines the "intelligence" (tour planning, narrative, question handling)
+- Extension provides the "actions" (editor control, file navigation)
+- Clean separation: agent can be updated without code changes, tools are reusable
 - Leverages existing user authentication and API access
-- Natural fit for VS Code extension ecosystem
 
-**Alternative considered**: OpenAI API or Anthropic API directly
-- More control over prompting and model selection
-- But requires separate auth, context building, and embedding infrastructure
-- Copilot's existing context is valuable
+**Alternative considered**: Standalone VS Code extension with Language Model API
+- Would require building our own context management and codebase understanding
+- More control but significantly more complexity
+- Copilot agent approach is simpler for MVP
 
-### 2. Tour Flow: Overview-First Pattern
+### 2. Tool-Based Editor Control
+
+**Decision**: The agent controls the editor by invoking custom tools (`openFile`, `highlightLines`, `navigateToLine`) implemented by the VS Code extension.
+
+**How it works**:
+1. Agent YAML declares available tools: `tools: openFile, highlightLines, navigateToLine`
+2. VS Code extension registers implementations for these tools
+3. During a tour, agent invokes tools via standard tool calls
+4. Extension receives tool invocation and executes VS Code API calls
+5. Tool returns success/failure to agent
+
+**Example**:
+```
+Agent: "Let me show you the login function..."
+Agent calls: openFile(path="src/auth/login.ts", line=45)
+Extension: Opens file, scrolls to line 45
+Extension returns: { success: true, visibleRange: "45-60" }
+Agent: "As you can see on line 48..."
+```
+
+**Rationale**:
+- Clean separation between intelligence (agent) and actions (extension)
+- Agent can be updated by editing markdown without code deployment
+- Tools are simple, focused, and testable
+- Standard tool invocation pattern
+
+### 3. Tour Flow: Overview-First Pattern
 
 **Decision**: When user asks a question, agent first provides a text overview of what it will show, then starts the tour.
 
@@ -59,7 +91,7 @@ Agent: "Authentication has three main parts:
 [Opens first file]
 ```
 
-### 3. User-Controlled Pacing
+### 4. User-Controlled Pacing
 
 **Decision**: After each tour stop (file opened + explanation given), agent waits for user signal before proceeding.
 
@@ -71,37 +103,7 @@ Agent: "Authentication has three main parts:
 
 **Implementation**: User can type "next", "continue", or any message to proceed. Questions are answered briefly by default, but user can request deeper dives.
 
-### 4. Chat Panel + Editor Navigation
-
-**Decision**: Explanations appear in the Copilot chat panel while the agent simultaneously controls editor navigation (opening files, highlighting lines).
-
-**Rationale**:
-- Separates narrative (chat) from code (editor)
-- User can reference both simultaneously
-- Familiar UX (similar to existing Copilot chat)
-- No need for custom webview UI for MVP
-
-**Alternative considered**: Inline code decorations/annotations
-- More visually integrated
-- But requires custom decoration management and can clutter the editor
-- Save for future enhancement
-
-### 5. VS Code Extension APIs for Navigation
-
-**Decision**: Use VS Code's `vscode.window.showTextDocument()` and editor selection APIs to open files and highlight code.
-
-**Rationale**:
-- Standard VS Code APIs, well-documented
-- Reliable and performant
-- No special permissions required
-- Can precisely control cursor position and visible range
-
-**Key APIs**:
-- `vscode.workspace.openTextDocument(uri)` - open file
-- `vscode.window.showTextDocument(doc, { selection: range })` - show with highlight
-- `vscode.Range` - specify line/column ranges to highlight
-
-### 6. Simplified Question Handling Mid-Tour
+### 5. Simplified Question Handling Mid-Tour
 
 **Decision**: By default, answer user questions briefly and continue the tour. Only create sub-tours if user explicitly requests ("show me that" / "dig deeper into X").
 

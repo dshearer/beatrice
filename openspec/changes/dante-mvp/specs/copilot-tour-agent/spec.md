@@ -1,45 +1,56 @@
 ## ADDED Requirements
 
-### Requirement: Agent responds to code questions with tours
-The Copilot agent SHALL respond to user questions about code by initiating guided tours that combine textual explanations with file navigation.
+### Requirement: Agent provides guided code tours
+The custom GitHub Copilot agent SHALL provide guided code tours by analyzing user questions and orchestrating tool calls to navigate the editor.
 
 #### Scenario: User asks about a feature
-- **WHEN** user asks "How does authentication work?" in Copilot chat
-- **THEN** agent responds with an overview of authentication components and initiates a tour
+- **WHEN** user asks "How does authentication work?" to the Dante agent
+- **THEN** agent responds with an overview of authentication components and invokes openFile tool to start the tour
 
 #### Scenario: User asks about specific function
 - **WHEN** user asks "What does validateUser do?"
-- **THEN** agent provides overview and opens the relevant file at the function definition
+- **THEN** agent provides overview and invokes openFile tool at the function definition location
 
-### Requirement: Agent provides overview before tour
-The agent SHALL provide a structured overview of what it will show before starting the tour navigation.
+### Requirement: Agent provides overview before tours
+The agent SHALL provide a structured textual overview of what it will show before invoking any navigation tools.
 
 #### Scenario: Overview shows tour structure
 - **WHEN** agent begins a tour in response to a question
-- **THEN** agent first outputs a numbered list of the main components or steps it will cover
+- **THEN** agent first outputs a numbered list of the main components or steps it will cover before invoking tools
 
 #### Scenario: Overview references file locations
 - **WHEN** agent provides the overview
-- **THEN** each overview item SHALL include the relevant file path(s)
+- **THEN** each overview item SHALL include the relevant file path(s) that will be shown
 
-### Requirement: Agent coordinates chat and navigation
-The agent SHALL synchronize explanations in the chat panel with file navigation actions in the editor.
+### Requirement: Agent declares custom tools
+The agent definition SHALL declare the custom tools (openFile, highlightLines, navigateToLine) in its YAML frontmatter.
 
-#### Scenario: Explanation followed by navigation
-- **WHEN** agent explains a tour stop
-- **THEN** agent opens the relevant file immediately after the explanation
+#### Scenario: Tools listed in agent YAML
+- **WHEN** agent definition is created
+- **THEN** YAML frontmatter includes `tools: openFile, highlightLines, navigateToLine`
 
-#### Scenario: Navigation targets specific lines
-- **WHEN** agent opens a file during a tour
-- **THEN** agent highlights the specific lines being discussed
+#### Scenario: Agent invokes declared tools
+- **WHEN** agent needs to navigate to code
+- **THEN** agent invokes one of the declared tools with appropriate parameters
 
-### Requirement: Agent handles context limitations
-The agent SHALL operate within GitHub Copilot's context limitations and gracefully handle large codebases.
+### Requirement: Agent prompt defines tour behavior
+The agent's markdown prompt SHALL include detailed instructions for providing narrative tours with user-controlled pacing.
 
-#### Scenario: Context window exceeded
-- **WHEN** agent cannot fit all relevant code in context
-- **THEN** agent focuses on the most relevant files and acknowledges limitations
+#### Scenario: Overview-first pattern instructed
+- **WHEN** agent prompt is defined
+- **THEN** prompt includes instructions to provide overview before navigating
 
-#### Scenario: File not found
-- **WHEN** agent cannot locate a file it wants to show
-- **THEN** agent explains what it was looking for and continues the tour with available information
+#### Scenario: User pacing instructed
+- **WHEN** agent prompt is defined
+- **THEN** prompt includes instructions to wait for user signals between tour stops
+
+### Requirement: Agent handles context limitations gracefully
+The agent SHALL work within GitHub Copilot's context limitations and handle cases where it cannot find or understand code.
+
+#### Scenario: Cannot locate relevant code
+- **WHEN** agent cannot find code to answer the question
+- **THEN** agent explains what it was looking for and suggests alternative approaches
+
+#### Scenario: Context window constraints
+- **WHEN** agent has limited context about the codebase
+- **THEN** agent focuses on most relevant files and acknowledges limitations
