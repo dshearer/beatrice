@@ -1,11 +1,11 @@
 {
   "name": "virgil",
-  "displayName": "Virgil: Guided Code Tours",
-  "description": "A VS Code extension that provides guided code tours through GitHub Copilot integration",
+  "displayName": "Virgil",
+  "description": "AI-guided code tours",
   "version": "0.1.0",
   "publisher": "dshearer",
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.108.1"
   },
   "repository": {
     "type": "git",
@@ -108,14 +108,18 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src"
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
   },
   "devDependencies": {
+    "@types/vscode": "^1.108.1",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.0.0",
-    "@types/vscode": "^1.99.0",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.52.0",
     "eslint": "^9.39.2",
-    "typescript": "^5.5.0",
-    "typescript-eslint": "^8.54.0"
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
   }
 }

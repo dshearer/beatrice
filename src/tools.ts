@@ -18,8 +18,12 @@ function resolveFilePath(filePath: string): vscode.Uri | undefined {
 
 function clampLine(line: number, document: vscode.TextDocument): number {
   const maxLine = document.lineCount;
-  if (line < 1) return 1;
-  if (line > maxLine) return maxLine;
+  if (line < 1) {
+    return 1;
+  }
+  if (line > maxLine) {
+    return maxLine;
+  }
   return line;
 }
 
