@@ -1,6 +1,6 @@
 {
-  "name": "virgil",
-  "displayName": "Virgil",
+  "name": "beatrice",
+  "displayName": "Beatrice",
   "description": "AI-guided code tours",
   "version": "0.1.0",
   "publisher": "dshearer",
@@ -21,13 +21,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "virgil.installAgent",
-        "title": "Virgil: Install Agent Prompt"
+        "command": "beatrice.installAgent",
+        "title": "Beatrice: Install Agent Prompt"
       }
     ],
     "languageModelTools": [
       {
-        "name": "virgil_openFile",
+        "name": "beatrice_openFile",
         "toolReferenceName": "openFile",
         "displayName": "Open File",
         "modelDescription": "Opens a file in the editor at a specified line number. Use this to show code to the user during a tour.",
@@ -56,7 +56,7 @@
         }
       },
       {
-        "name": "virgil_highlightLines",
+        "name": "beatrice_highlightLines",
         "toolReferenceName": "highlightLines",
         "displayName": "Highlight Lines",
         "modelDescription": "Highlights a range of lines in the active editor. Clears any previous highlight. Use this to draw attention to specific code.",
@@ -82,7 +82,7 @@
         }
       },
       {
-        "name": "virgil_navigateToLine",
+        "name": "beatrice_navigateToLine",
         "toolReferenceName": "navigateToLine",
         "displayName": "Navigate to Line",
         "modelDescription": "Scrolls the active editor to center a specific line in the viewport without reopening the file.",

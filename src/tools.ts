@@ -100,7 +100,7 @@ async function openFileTool(
     applyHighlight(editor, args.line, args.endLine);
   }
 
-  vscode.window.setStatusBarMessage(`Virgil: Opened ${args.path}`, 3000);
+  vscode.window.setStatusBarMessage(`Beatrice: Opened ${args.path}`, 3000);
 
   return JSON.stringify({
     success: true,
@@ -123,7 +123,7 @@ async function highlightLinesTool(
   centerLineInViewport(editor, args.startLine);
 
   vscode.window.setStatusBarMessage(
-    `Virgil: Highlighted lines ${args.startLine}-${args.endLine}`,
+    `Beatrice: Highlighted lines ${args.startLine}-${args.endLine}`,
     3000
   );
 
@@ -146,7 +146,7 @@ async function navigateToLineTool(
   centerLineInViewport(editor, args.line);
 
   vscode.window.setStatusBarMessage(
-    `Virgil: Navigated to line ${args.line}`,
+    `Beatrice: Navigated to line ${args.line}`,
     3000
   );
 
@@ -157,12 +157,12 @@ async function navigateToLineTool(
 }
 
 export function registerTools(context: vscode.ExtensionContext) {
-  console.log("[Virgil] Registering tools...");
-  console.log("[Virgil] vscode.lm available:", !!vscode.lm);
-  console.log("[Virgil] vscode.lm.registerTool available:", !!vscode.lm?.registerTool);
+  console.log("[Beatrice] Registering tools...");
+  console.log("[Beatrice] vscode.lm available:", !!vscode.lm);
+  console.log("[Beatrice] vscode.lm.registerTool available:", !!vscode.lm?.registerTool);
 
   context.subscriptions.push(
-    vscode.lm.registerTool("virgil_openFile", {
+    vscode.lm.registerTool("beatrice_openFile", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           path: string;
@@ -184,7 +184,7 @@ export function registerTools(context: vscode.ExtensionContext) {
         }>,
         token: vscode.CancellationToken
       ) {
-        console.log("[Virgil] openFile invoked with:", options.input);
+        console.log("[Beatrice] openFile invoked with:", options.input);
         const result = await openFileTool(options.input, token);
         return new vscode.LanguageModelToolResult([
           new vscode.LanguageModelTextPart(result),
@@ -194,7 +194,7 @@ export function registerTools(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.lm.registerTool("virgil_highlightLines", {
+    vscode.lm.registerTool("beatrice_highlightLines", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           startLine: number;
@@ -222,7 +222,7 @@ export function registerTools(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.lm.registerTool("virgil_navigateToLine", {
+    vscode.lm.registerTool("beatrice_navigateToLine", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           line: number;

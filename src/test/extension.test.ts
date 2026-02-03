@@ -2,44 +2,44 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-suite('Virgil Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Running Virgil tests...');
+suite('Beatrice Extension Test Suite', () => {
+	vscode.window.showInformationMessage('Running Beatrice tests...');
 
 	test('Extension should be present', () => {
-		assert.ok(vscode.extensions.getExtension('dshearer.virgil'));
+		assert.ok(vscode.extensions.getExtension('dshearer.beatrice'));
 	});
 
 	test('Extension should activate', async () => {
-		const ext = vscode.extensions.getExtension('dshearer.virgil');
+		const ext = vscode.extensions.getExtension('dshearer.beatrice');
 		assert.ok(ext);
 		await ext.activate();
 		assert.strictEqual(ext.isActive, true);
 	});
 
-	test('Should register virgil.installAgent command', async () => {
+	test('Should register beatrice.installAgent command', async () => {
 		const commands = await vscode.commands.getCommands(true);
-		assert.ok(commands.includes('virgil.installAgent'), 'virgil.installAgent command should be registered');
+		assert.ok(commands.includes('beatrice.installAgent'), 'beatrice.installAgent command should be registered');
 	});
 
 	test('Should register language model tools', async () => {
-		const ext = vscode.extensions.getExtension('dshearer.virgil');
+		const ext = vscode.extensions.getExtension('dshearer.beatrice');
 		await ext?.activate();
 		
 		// Check that tools are registered
 		const tools = vscode.lm.tools;
 		const toolNames = tools.map(t => t.name);
 		
-		assert.ok(toolNames.includes('virgil_openFile'), 'virgil_openFile tool should be registered');
-		assert.ok(toolNames.includes('virgil_highlightLines'), 'virgil_highlightLines tool should be registered');
-		assert.ok(toolNames.includes('virgil_navigateToLine'), 'virgil_navigateToLine tool should be registered');
+		assert.ok(toolNames.includes('beatrice_openFile'), 'beatrice_openFile tool should be registered');
+		assert.ok(toolNames.includes('beatrice_highlightLines'), 'beatrice_highlightLines tool should be registered');
+		assert.ok(toolNames.includes('beatrice_navigateToLine'), 'beatrice_navigateToLine tool should be registered');
 	});
 
 	test('Language model tools should have correct properties', async () => {
-		const ext = vscode.extensions.getExtension('dshearer.virgil');
+		const ext = vscode.extensions.getExtension('dshearer.beatrice');
 		await ext?.activate();
 		
 		const tools = vscode.lm.tools;
-		const openFileTool = tools.find(t => t.name === 'virgil_openFile');
+		const openFileTool = tools.find(t => t.name === 'beatrice_openFile');
 		
 		assert.ok(openFileTool, 'openFile tool should exist');
 		assert.ok(openFileTool.tags, 'Tool should have tags property');
@@ -101,13 +101,13 @@ suite('Virgil Extension Test Suite', () => {
 
 	suite('Agent Installation', () => {
 		test('Should have agent file in extension', async () => {
-			const ext = vscode.extensions.getExtension('dshearer.virgil');
+			const ext = vscode.extensions.getExtension('dshearer.beatrice');
 			assert.ok(ext);
 			
-			const agentPath = path.join(ext.extensionPath, 'agents', 'virgil.agent.md');
+			const agentPath = path.join(ext.extensionPath, 'agents', 'beatrice.agent.md');
 			// We can't easily check file existence in extension path during tests,
 			// but we can verify the path is constructed correctly
-			assert.ok(agentPath.includes('virgil.agent.md'));
+			assert.ok(agentPath.includes('beatrice.agent.md'));
 		});
 
 		test('Target directory path should be correct', () => {
