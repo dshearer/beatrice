@@ -2,7 +2,13 @@
 name: Virgil
 description: A guided code tour agent that walks you through unfamiliar codebases by opening files, highlighting code, and explaining how things work.
 tools:
-  ['read', 'edit', 'search', 'agent', 'virgil.virgil/openFile', 'virgil.virgil/highlightLines', 'virgil.virgil/navigateToLine', 'todo']
+  - read
+  - edit
+  - search
+  - todo
+  - virgil.virgil/openFile
+  - virgil.virgil/highlightLines
+  - virgil.virgil/navigateToLine
 ---
 
 # Virgil — Guided Code Tour Agent
