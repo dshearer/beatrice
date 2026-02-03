@@ -1,0 +1,115 @@
+{
+  "name": "dante",
+  "displayName": "Dante - Guided Code Tours",
+  "description": "A VS Code extension that provides guided code tours through GitHub Copilot agent integration",
+  "version": "0.1.0",
+  "publisher": "dante",
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dante.installAgent",
+        "title": "Dante: Install Agent Prompt"
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "dante_openFile",
+        "toolReferenceName": "openFile",
+        "displayName": "Open File",
+        "modelDescription": "Opens a file in the editor at a specified line number. Use this to show code to the user during a tour.",
+        "userDescription": "Opens a file at a specific line",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(go-to-file)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Workspace-relative file path to open"
+            },
+            "line": {
+              "type": "number",
+              "description": "Line number to position cursor at (1-based)"
+            },
+            "endLine": {
+              "type": "number",
+              "description": "Optional end line for highlighting a range"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      },
+      {
+        "name": "dante_highlightLines",
+        "toolReferenceName": "highlightLines",
+        "displayName": "Highlight Lines",
+        "modelDescription": "Highlights a range of lines in the active editor. Clears any previous highlight. Use this to draw attention to specific code.",
+        "userDescription": "Highlights a range of lines in the editor",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(selection)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "startLine": {
+              "type": "number",
+              "description": "Start line number (1-based)"
+            },
+            "endLine": {
+              "type": "number",
+              "description": "End line number (1-based)"
+            }
+          },
+          "required": [
+            "startLine",
+            "endLine"
+          ]
+        }
+      },
+      {
+        "name": "dante_navigateToLine",
+        "toolReferenceName": "navigateToLine",
+        "displayName": "Navigate to Line",
+        "modelDescription": "Scrolls the active editor to center a specific line in the viewport without reopening the file.",
+        "userDescription": "Scrolls to a specific line in the editor",
+        "canBeReferencedInPrompt": true,
+        "icon": "$(arrow-down)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "line": {
+              "type": "number",
+              "description": "Line number to center in viewport (1-based)"
+            }
+          },
+          "required": [
+            "line"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.99.0",
+    "typescript": "^5.5.0"
+  }
+}
