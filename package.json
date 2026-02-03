@@ -1,14 +1,18 @@
 {
   "name": "virgil",
-  "displayName": "Virgil - Guided Code Tours",
-  "description": "A VS Code extension that provides guided code tours through GitHub Copilot agent integration",
+  "displayName": "Virgil: Guided Code Tours",
+  "description": "A VS Code extension that provides guided code tours through GitHub Copilot integration",
   "version": "0.1.0",
   "publisher": "virgil",
   "engines": {
     "vscode": "^1.99.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dshearer/virgil"
+  },
   "categories": [
-    "Other"
+    "Chat"
   ],
   "activationEvents": [
     "onStartupFinished"

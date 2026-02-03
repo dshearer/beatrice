@@ -1,121 +1,36 @@
-# Virgil — Guided Code Tours
+# Virgil: Guided Code Tours
 
-A VS Code extension that provides guided code tours through a GitHub Copilot agent. Instead of just answering questions in text, Virgil opens files, highlights code, and walks you through the codebase step by step.
+In 1321, Virgil guided Dante Alighieri through the nine circles of Hell. Today, artificial intelligence can guide you through
+the most hellacious codebases.
 
-## Architecture
+Virgil is a VS Code extension that provides guided code tours, using a GitHub Copilot custom agent. Instead of just answering questions in text,
+Virgil opens files, highlights code, and walks you through the codebase step by step.
 
-```
-┌─────────────────────────────────────────────┐
-│              GitHub Copilot Chat             │
-│                                             │
-│  User: "How does authentication work?"      │
-│                                             │
-│  ┌───────────────────────────────────────┐  │
-│  │         Virgil Agent                   │  │
-│  │  (your-repo/.github/agents/virgil.agent.md) │  │
-│  │                                       │  │
-│  │  - Plans tour stops                   │  │
-│  │  - Provides narrative explanations    │  │
-│  │  - Controls pacing                    │  │
-│  │                                       │  │
-│  │  Built-in tools: read, search         │  │
-│  │  Custom tools: openFile,              │  │
-│  │    highlightLines, navigateToLine     │  │
-│  └──────────────┬────────────────────────┘  │
-│                 │ tool calls                 │
-│  ┌──────────────▼────────────────────────┐  │
-│  │       Virgil VS Code Extension         │  │
-│  │                                       │  │
-│  │  Implements custom tools:             │  │
-│  │  - virgil_openFile                     │  │
-│  │  - virgil_highlightLines              │  │
-│  │  - virgil_navigateToLine              │  │
-│  └───────────────────────────────────────┘  │
-└─────────────────────────────────────────────┘
-```
+## Status
 
-The **agent** (markdown file) handles intelligence — tour planning, narration, question handling. The **extension** (TypeScript) handles actions — opening files, highlighting lines, scrolling the editor.
+This is experimental. But please give it a try!
 
-## Installation
+## Requirements
 
-1. Clone the repository
-2. Run `npm install`
-3. Run `npm run compile`
-4. Press F5 in VS Code to launch the Extension Development Host
-5. Copy `agents/virgil.agent.md` into `.github/agents/` in the repo you want to tour
+You need GitHub Copilot, and of course VS Code. (Claude Code is great, but you really need a good IDE to do serious code exploration.)
 
-## Usage
+## How to Use
 
-1. Open a workspace in the Extension Development Host
-2. Open Copilot Chat (`Ctrl+Shift+I` / `Cmd+Shift+I`)
-3. Type `@virgil` followed by your question
+### Starting a Tour
 
-### Example Questions
+**One-time setup:** From the command palette, run "Virgil: Install Agent Prompt". This adds the custom agent prompt at `.github/agents/virgil.agent.md`. Feel free to commit this to git.
 
-- `@virgil How does authentication work in this project?`
-- `@virgil Walk me through the API request lifecycle`
-- `@virgil What happens when a user logs in?`
-- `@virgil Show me how error handling works`
-- `@virgil How are database queries structured?`
+Open a Copilot Chat session by clicking on the little dialog icon at the top of your VS Code window:
+
+<img src="dialog-icon.png" alt="Screenshot of the button at the top of the VS Code window that opens a Copilot Chat session" width="100">
+
+At the bottom of the Copilot Chat view, there's a popup menu labelled "Agent"; click on that and you'll see "Virgil":
+
+<img src="agent-selector.png" alt="Screenshot of the popup menu for selecting AI agents in the Copilot Chat view" width="300">
+
+With the "Virgil" agent selected, tell Virgil what you'd like to learn about in your codebase.
 
 ### During a Tour
 
-- Type **"next"** or **"continue"** to advance to the next stop
-- Ask a **question** at any time — Virgil will answer and offer to continue
-- Say **"skip to X"** to jump to a specific topic
-- Say **"stop"** to end the tour
-
-## Custom Tools
-
-### `virgil_openFile`
-
-Opens a file in the editor at a specified line.
-
-| Parameter | Type     | Required | Description                              |
-|-----------|----------|----------|------------------------------------------|
-| `path`    | `string` | Yes      | Workspace-relative file path             |
-| `line`    | `number` | No       | Line number to position cursor at (1-based) |
-| `endLine` | `number` | No       | End line for highlighting a range        |
-
-### `virgil_highlightLines`
-
-Highlights a range of lines in the active editor. Clears any previous highlight.
-
-| Parameter   | Type     | Required | Description                    |
-|-------------|----------|----------|--------------------------------|
-| `startLine` | `number` | Yes      | Start line number (1-based)    |
-| `endLine`   | `number` | Yes      | End line number (1-based)      |
-
-### `virgil_navigateToLine`
-
-Scrolls the active editor to center a specific line in the viewport.
-
-| Parameter | Type     | Required | Description                          |
-|-----------|----------|----------|--------------------------------------|
-| `line`    | `number` | Yes      | Line number to center (1-based)      |
-
-## Known Limitations
-
-- **Preview API**: Relies on GitHub Copilot's agent API which is in preview and may change
-- **Context window**: Large codebases may exceed the agent's context window, limiting tour depth
-- **No tour persistence**: Tours exist only in the chat session — no recording or replay
-- **Single workspace**: Multi-root workspace support resolves files from the first matching root
-- **AI accuracy**: The agent may occasionally reference incorrect line numbers or misinterpret code
-
-## Development
-
-```bash
-npm install          # Install dependencies
-npm run compile      # Build
-npm run watch        # Build in watch mode
-npm run lint         # Lint
-```
-
-## Future Enhancements
-
-- Tour recording and playback
-- Bookmarking tour stops
-- Tour history and favorites
-- Multi-repo support
-- Confidence indicators for AI-generated explanations
-- Custom tour templates
+Virgil will lead the tour, but it's still a conversation. Speak up if you don't understand something! Go on tangents!
+You can ask to go to a previous step, or for modifications to the current tour plan, or even for a totally different tour.
