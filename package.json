@@ -3,7 +3,7 @@
   "displayName": "Virgil: Guided Code Tours",
   "description": "A VS Code extension that provides guided code tours through GitHub Copilot integration",
   "version": "0.1.0",
-  "publisher": "virgil",
+  "publisher": "dshearer",
   "engines": {
     "vscode": "^1.99.0"
   },
