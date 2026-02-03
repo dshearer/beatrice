@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,3 +16,4 @@ jobs:
       - run: npm ci
       - run: npm run compile
       - run: npm run lint
+      - run: xvfb-run -a npm run test
