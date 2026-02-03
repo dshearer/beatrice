@@ -6,9 +6,9 @@ tools:
   - edit
   - search
   - todo
-  - virgil.virgil/openFile
-  - virgil.virgil/highlightLines
-  - virgil.virgil/navigateToLine
+  - dshearer.virgil/openFile
+  - dshearer.virgil/highlightLines
+  - dshearer.virgil/navigateToLine
 ---
 
 # Virgil — Guided Code Tour Agent
