@@ -1,6 +1,6 @@
-# Dante — Guided Code Tours
+# Virgil — Guided Code Tours
 
-A VS Code extension that provides guided code tours through a GitHub Copilot agent. Instead of just answering questions in text, Dante opens files, highlights code, and walks you through the codebase step by step.
+A VS Code extension that provides guided code tours through a GitHub Copilot agent. Instead of just answering questions in text, Virgil opens files, highlights code, and walks you through the codebase step by step.
 
 ## Architecture
 
@@ -11,8 +11,8 @@ A VS Code extension that provides guided code tours through a GitHub Copilot age
 │  User: "How does authentication work?"      │
 │                                             │
 │  ┌───────────────────────────────────────┐  │
-│  │         Dante Agent                   │  │
-│  │  (your-repo/.github/agents/dante.agent.md) │  │
+│  │         Virgil Agent                   │  │
+│  │  (your-repo/.github/agents/virgil.agent.md) │  │
 │  │                                       │  │
 │  │  - Plans tour stops                   │  │
 │  │  - Provides narrative explanations    │  │
@@ -24,12 +24,12 @@ A VS Code extension that provides guided code tours through a GitHub Copilot age
 │  └──────────────┬────────────────────────┘  │
 │                 │ tool calls                 │
 │  ┌──────────────▼────────────────────────┐  │
-│  │       Dante VS Code Extension         │  │
+│  │       Virgil VS Code Extension         │  │
 │  │                                       │  │
 │  │  Implements custom tools:             │  │
-│  │  - dante_openFile                     │  │
-│  │  - dante_highlightLines              │  │
-│  │  - dante_navigateToLine              │  │
+│  │  - virgil_openFile                     │  │
+│  │  - virgil_highlightLines              │  │
+│  │  - virgil_navigateToLine              │  │
 │  └───────────────────────────────────────┘  │
 └─────────────────────────────────────────────┘
 ```
@@ -42,32 +42,32 @@ The **agent** (markdown file) handles intelligence — tour planning, narration,
 2. Run `npm install`
 3. Run `npm run compile`
 4. Press F5 in VS Code to launch the Extension Development Host
-5. Copy `agents/dante.agent.md` into `.github/agents/` in the repo you want to tour
+5. Copy `agents/virgil.agent.md` into `.github/agents/` in the repo you want to tour
 
 ## Usage
 
 1. Open a workspace in the Extension Development Host
 2. Open Copilot Chat (`Ctrl+Shift+I` / `Cmd+Shift+I`)
-3. Type `@dante` followed by your question
+3. Type `@virgil` followed by your question
 
 ### Example Questions
 
-- `@dante How does authentication work in this project?`
-- `@dante Walk me through the API request lifecycle`
-- `@dante What happens when a user logs in?`
-- `@dante Show me how error handling works`
-- `@dante How are database queries structured?`
+- `@virgil How does authentication work in this project?`
+- `@virgil Walk me through the API request lifecycle`
+- `@virgil What happens when a user logs in?`
+- `@virgil Show me how error handling works`
+- `@virgil How are database queries structured?`
 
 ### During a Tour
 
 - Type **"next"** or **"continue"** to advance to the next stop
-- Ask a **question** at any time — Dante will answer and offer to continue
+- Ask a **question** at any time — Virgil will answer and offer to continue
 - Say **"skip to X"** to jump to a specific topic
 - Say **"stop"** to end the tour
 
 ## Custom Tools
 
-### `dante_openFile`
+### `virgil_openFile`
 
 Opens a file in the editor at a specified line.
 
@@ -77,7 +77,7 @@ Opens a file in the editor at a specified line.
 | `line`    | `number` | No       | Line number to position cursor at (1-based) |
 | `endLine` | `number` | No       | End line for highlighting a range        |
 
-### `dante_highlightLines`
+### `virgil_highlightLines`
 
 Highlights a range of lines in the active editor. Clears any previous highlight.
 
@@ -86,7 +86,7 @@ Highlights a range of lines in the active editor. Clears any previous highlight.
 | `startLine` | `number` | Yes      | Start line number (1-based)    |
 | `endLine`   | `number` | Yes      | End line number (1-based)      |
 
-### `dante_navigateToLine`
+### `virgil_navigateToLine`
 
 Scrolls the active editor to center a specific line in the viewport.
 

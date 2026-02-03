@@ -1,9 +1,9 @@
 {
-  "name": "dante",
-  "displayName": "Dante - Guided Code Tours",
+  "name": "virgil",
+  "displayName": "Virgil - Guided Code Tours",
   "description": "A VS Code extension that provides guided code tours through GitHub Copilot agent integration",
   "version": "0.1.0",
-  "publisher": "dante",
+  "publisher": "virgil",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -17,13 +17,13 @@
   "contributes": {
     "commands": [
       {
-        "command": "dante.installAgent",
-        "title": "Dante: Install Agent Prompt"
+        "command": "virgil.installAgent",
+        "title": "Virgil: Install Agent Prompt"
       }
     ],
     "languageModelTools": [
       {
-        "name": "dante_openFile",
+        "name": "virgil_openFile",
         "toolReferenceName": "openFile",
         "displayName": "Open File",
         "modelDescription": "Opens a file in the editor at a specified line number. Use this to show code to the user during a tour.",
@@ -52,7 +52,7 @@
         }
       },
       {
-        "name": "dante_highlightLines",
+        "name": "virgil_highlightLines",
         "toolReferenceName": "highlightLines",
         "displayName": "Highlight Lines",
         "modelDescription": "Highlights a range of lines in the active editor. Clears any previous highlight. Use this to draw attention to specific code.",
@@ -78,7 +78,7 @@
         }
       },
       {
-        "name": "dante_navigateToLine",
+        "name": "virgil_navigateToLine",
         "toolReferenceName": "navigateToLine",
         "displayName": "Navigate to Line",
         "modelDescription": "Scrolls the active editor to center a specific line in the viewport without reopening the file.",

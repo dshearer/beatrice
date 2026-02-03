@@ -96,7 +96,7 @@ async function openFileTool(
     applyHighlight(editor, args.line, args.endLine);
   }
 
-  vscode.window.setStatusBarMessage(`Dante: Opened ${args.path}`, 3000);
+  vscode.window.setStatusBarMessage(`Virgil: Opened ${args.path}`, 3000);
 
   return JSON.stringify({
     success: true,
@@ -119,7 +119,7 @@ async function highlightLinesTool(
   centerLineInViewport(editor, args.startLine);
 
   vscode.window.setStatusBarMessage(
-    `Dante: Highlighted lines ${args.startLine}-${args.endLine}`,
+    `Virgil: Highlighted lines ${args.startLine}-${args.endLine}`,
     3000
   );
 
@@ -142,7 +142,7 @@ async function navigateToLineTool(
   centerLineInViewport(editor, args.line);
 
   vscode.window.setStatusBarMessage(
-    `Dante: Navigated to line ${args.line}`,
+    `Virgil: Navigated to line ${args.line}`,
     3000
   );
 
@@ -153,12 +153,12 @@ async function navigateToLineTool(
 }
 
 export function registerTools(context: vscode.ExtensionContext) {
-  console.log("[Dante] Registering tools...");
-  console.log("[Dante] vscode.lm available:", !!vscode.lm);
-  console.log("[Dante] vscode.lm.registerTool available:", !!vscode.lm?.registerTool);
+  console.log("[Virgil] Registering tools...");
+  console.log("[Virgil] vscode.lm available:", !!vscode.lm);
+  console.log("[Virgil] vscode.lm.registerTool available:", !!vscode.lm?.registerTool);
 
   context.subscriptions.push(
-    vscode.lm.registerTool("dante_openFile", {
+    vscode.lm.registerTool("virgil_openFile", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           path: string;
@@ -180,7 +180,7 @@ export function registerTools(context: vscode.ExtensionContext) {
         }>,
         token: vscode.CancellationToken
       ) {
-        console.log("[Dante] openFile invoked with:", options.input);
+        console.log("[Virgil] openFile invoked with:", options.input);
         const result = await openFileTool(options.input, token);
         return new vscode.LanguageModelToolResult([
           new vscode.LanguageModelTextPart(result),
@@ -190,7 +190,7 @@ export function registerTools(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.lm.registerTool("dante_highlightLines", {
+    vscode.lm.registerTool("virgil_highlightLines", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           startLine: number;
@@ -218,7 +218,7 @@ export function registerTools(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.lm.registerTool("dante_navigateToLine", {
+    vscode.lm.registerTool("virgil_navigateToLine", {
       async prepareInvocation(
         options: vscode.LanguageModelToolInvocationPrepareOptions<{
           line: number;

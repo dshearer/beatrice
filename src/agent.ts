@@ -2,15 +2,15 @@ import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 
-const AGENT_FILENAME = "dante.agent.md";
+const AGENT_FILENAME = "virgil.agent.md";
 const TARGET_DIR = path.join(".github", "agents");
 
 export function registerInstallAgentCommand(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("dante.installAgent", () => {
+    vscode.commands.registerCommand("virgil.installAgent", () => {
       const folders = vscode.workspace.workspaceFolders;
       if (!folders || folders.length === 0) {
-        vscode.window.showErrorMessage("Dante: No workspace folder open.");
+        vscode.window.showErrorMessage("Virgil: No workspace folder open.");
         return;
       }
 
@@ -22,7 +22,7 @@ export function registerInstallAgentCommand(context: vscode.ExtensionContext) {
 
         if (fs.existsSync(targetPath)) {
           vscode.window.showInformationMessage(
-            `Dante: Agent already installed in ${folder.name}.`
+            `Virgil: Agent already installed in ${folder.name}.`
           );
           continue;
         }
@@ -30,7 +30,7 @@ export function registerInstallAgentCommand(context: vscode.ExtensionContext) {
         fs.mkdirSync(targetDir, { recursive: true });
         fs.copyFileSync(bundledPath, targetPath);
         vscode.window.showInformationMessage(
-          `Dante: Installed agent to ${folder.name}/${TARGET_DIR}/${AGENT_FILENAME}`
+          `Virgil: Installed agent to ${folder.name}/${TARGET_DIR}/${AGENT_FILENAME}`
         );
       }
     })
